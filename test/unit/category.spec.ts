@@ -1,22 +1,21 @@
 import CategoryDTO from "../../src/application/dtos/CategoryDTO";
 import CreateCategory from "../../src/application/use-cases/CreateCategory";
-import Category from "../../src/domain/entities/Category";
+import CategoryMongooseAdapter from "../../src/infra/database/do/CategoryMongooseAdapter";
+import CategoryRepositoryDB from "../../src/infra/repositories/CategoryRepositoryMongoDB";
 
-export const sutCategory = () => {
-  const category: CategoryDTO = {
-    description: "Category Description",
-    ownerId: "123456",
-    title: "Category title",
-  };
+export const sutCategoryRepository = () => {
+  const db = new CategoryMongooseAdapter();
 
-  return new Category(category);
+  return new CategoryRepositoryDB(db);
+};
+
+export const sutCreateCategory = () => {
+  const repository = sutCategoryRepository();
+
+  return new CreateCategory(repository)
 };
 
 describe("Category", () => {
-  it("Should create a sut category", () => {
-    const sut = sutCategory();
-    expect(sut).toBeDefined();
-  });
 
   it("Should create a category", () => {
     const category: CategoryDTO = {
@@ -24,9 +23,8 @@ describe("Category", () => {
       ownerId: "123456",
       title: "Category title",
     };
-    
-    const createCategory = new CreateCategory().execute(category)
-    
-    expect(category).toStrictEqual(createCategory)
+    const sut = sutCreateCategory();
+
+    expect(category).toStrictEqual(sut.execute(category));
   });
 });
