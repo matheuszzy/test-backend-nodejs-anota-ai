@@ -6,11 +6,13 @@ export interface DatabaseConnection {
 
 export default class MongooseAdapter {
   connect: any;
-  constructor() {
-    this.connect = mongoose
-      .connect(process.env.MONGODB_URI as string)
-      .then(() => {
-        console.log("Connected to the database.")
-      });
+  constructor(uri: string) {
+    this.connect = mongoose.connect(uri).then(() => {
+      console.log("Connected to the database.");
+    });
+  }
+
+  static close() {
+    mongoose.connection.close()
   }
 }
