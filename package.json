@@ -4,7 +4,7 @@
   "description": "Resolução de desafio backend anotaAi.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --setupFiles dotenv/config",
     "dev": "ts-node ./src/server.ts && NODE_ENV='development'"
   },
   "keywords": [],

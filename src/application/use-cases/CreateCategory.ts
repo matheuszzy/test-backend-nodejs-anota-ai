@@ -1,9 +1,13 @@
 import Category from "../../domain/entities/Category";
-import CategoryRepositoryDB from "../../infra/repositories/CategoryRepositoryMongoDB";
+import Queue from "../../infra/queue/Queue";
 import CategoryDTO from "../dtos/CategoryDTO";
+import CategoryRepository from "../repository/CategoryRepository";
 
 export default class CreateCategory {
-  constructor(readonly categoryRepository: CategoryRepositoryDB) {}
+  constructor(
+    readonly categoryRepository: CategoryRepository,
+    readonly queue: Queue
+    ) {}
 
   async execute(input: CategoryDTO) {
     const categoryList = await this.categoryRepository.findByOwnerId(
